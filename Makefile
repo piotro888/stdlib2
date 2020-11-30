@@ -25,7 +25,7 @@ endif
 %.o: %.cpp
 	@mkdir -p build/src
 	@echo "[COMPILING SRC] $<" 
-	$(CC) $< -o $@ -c -Iinclude/ $(FLAGS) 
+	$(CC) $< -o build/$@ -c -Iinclude/ $(FLAGS) 
 
 clean:
 	@echo "Cleaning"
@@ -42,9 +42,9 @@ tests/%: tests/%.cpp build/libstd2.a
 	@mkdir -p build/tests
 	@echo "[COMPILING TEST] $<"
 ifneq "${TARGETOBJS}" ""
-	$(CC) $< -o build/$@ -Iinclude/ -Lbuild -lstd2 $(DEBUG_FLAGS)
+	@$(CC) $< -o build/$@ -Iinclude/ -Lbuild -lstd2 $(DEBUG_FLAGS)
 else
-	$(CC) $< -o build/$@ -Iinclude/ $(DEBUG_FLAGS)
+	@$(CC) $< -o build/$@ -Iinclude/ $(DEBUG_FLAGS)
 endif
 	@echo "    [TEST RUN] Running test $@"
 	@./build/$@ || (echo ***TEST FAILED*** return code: $$? && exit 1)
